@@ -6,7 +6,7 @@ export default function SchedList() {
   const [lista, setLista] = useState<Sched[]>([]);
 
   const fetchAgendamentos = async () => {
-    const res = await api.get("/");
+    const res = await api.get("/agendamentos");
     setLista(res.data);
   };
 
