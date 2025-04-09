@@ -1,5 +1,6 @@
+"use client"
 import { useState } from "react";
-import { Sched } from "@/app/types/Sched";
+import { Sched } from "@/app/types/Agendamento";
 import api from "@/app/services/api";
 
 
