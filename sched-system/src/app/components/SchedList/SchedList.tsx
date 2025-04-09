@@ -1,49 +1,65 @@
 import { useEffect, useState } from "react";
-import { Sched } from "@/app/types/Sched";
 import api from "@/app/services/api";
 
+type Agendamento = {
+  id: number;
+  nome: string;
+  data: string;
+  concluido: boolean;
+};
+
 export default function SchedList() {
-  const [lista, setLista] = useState<Sched[]>([]);
+  const [agendamentos, setAgendamentos] = useState<Agendamento[]>([]);
 
-  const fetchAgendamentos = async () => {
-    const res = await api.get("/agendamentos");
-    setLista(res.data);
+  const fetchAgendamento = async () => {
+    try {
+      const response = await api.get("/agendamentos");
+      setAgendamentos(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar agendamentos", error);
+    }
   };
 
-  const confirmar = async (id: number) => {
-    await api.put(`/${id}/confirmar`);
-    fetchAgendamentos();
-  };
-
-  const deletar = async (id: number) => {
-    await api.delete(`/${id}`);
-    fetchAgendamentos();
+  const marcarComoConcluido = async (id: number) => {
+    try {
+      await api.put(`/agendamentos/${id}/concluir`);
+      fetchAgendamento(); // recarrega os dados
+    } catch (error) {
+      console.error("Erro ao concluir agendamento", error);
+    }
   };
 
   useEffect(() => {
-    fetchAgendamentos();
+    fetchAgendamento();
   }, []);
 
-
-    return (
-        <div className="space-y-4">
-      {lista.map((ag) => (
-        <div key={ag.id} className="border p-4 rounded">
-          <p><strong>Cliente:</strong> {ag.cliente}</p>
-          <p><strong>Horário:</strong> {new Date(ag.horario).toLocaleString()}</p>
-          <p><strong>Status:</strong> {ag.confirmado ? "Confirmado" : "Pendente"}</p>
-          <div className="space-x-2 mt-2">
-            {!ag.confirmado && (
-              <button onClick={() => confirmar(ag.id!)} className="bg-green-600 text-white px-2 py-1 rounded">
-                Confirmar
-              </button>
-            )}
-            <button onClick={() => deletar(ag.id!)} className="bg-red-600 text-white px-2 py-1 rounded">
-              Deletar
-            </button>
+  return (
+    <div className="space-y-4">
+      {agendamentos.map((ag) => (
+        <div
+          key={ag.id}
+          className={`p-4 border rounded-xl shadow-sm flex justify-between items-center ${
+            ag.concluido ? "bg-green-100 line-through text-gray-500" : "bg-white"
+          }`}
+        >
+          <div>
+            <h2 className="text-xl font-semibold">{ag.nome}</h2>
+            <p className="text-sm text-gray-500">📅 {ag.data}</p>
           </div>
+
+          <button
+            className={`px-4 py-1 text-sm font-medium rounded-md border ${
+              ag.concluido
+                ? "border-gray-300 text-gray-400 cursor-not-allowed"
+                : "border-green-600 text-green-600 hover:bg-green-100"
+            }`}
+            disabled={ag.concluido}
+            onClick={() => marcarComoConcluido(ag.id)}
+          >
+            {ag.concluido ? "Concluído" : "Concluir"}
+          </button>
         </div>
       ))}
     </div>
-    );
+  );
 }
