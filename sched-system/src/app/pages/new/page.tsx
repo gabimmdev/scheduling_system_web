@@ -1,4 +1,4 @@
-import SchedForm from "@/app/components/SchedForm/SchedForm";
+import SchedForm from "@/app/components/schedform/SchedForm";
 import Link from "next/link";
 
 
