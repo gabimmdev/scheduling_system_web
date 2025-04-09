@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 interface NavBarProps {
-    active: "Home" | "Agendamentos" 
+    active:  "home" | "dashboard" | "agendamentos" 
 }
 
 export default function NavBar(props: NavBarProps) {
@@ -10,11 +10,11 @@ export default function NavBar(props: NavBarProps) {
 
     const links = [
         { text: "home", href: "pages/home" },
-        { text: "agendamentos", href: "/schedlist" },
+        { text: "agendamentos", href: "components/SchedList" },
     ]
 
     return (
-        <nav className="flex justify-between items-center bg-slate-900 p-6">
+        <nav className="flex justify-between items-center bg-transparent shadow-md p-6">
             <h1 className="text-3xl font-bold">Organize.me</h1>
             <ul className="flex gap-4">
                 {links.map(link =>
@@ -24,7 +24,7 @@ export default function NavBar(props: NavBarProps) {
                 )}
 
             </ul>
-            <img className="size-12 rounded-full" src="http://github.com/gabimmdev.png" alt="" />
+            <img className="size-12 rounded-full" src="http://github.com/gabimmdev.png" alt="gabimmdev" />
         </nav>
-    )
+    );
 }
