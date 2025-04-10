@@ -1,30 +1,40 @@
+'use client'
 import Link from "next/link";
+import { useState } from "react";
 
-interface NavBarProps {
-    active:  "home" | "dashboard" | "agendamentos" 
-}
+export default function NavBar() {
+  
+  const [isOpen, setIsOpen] = useState(false);
 
-export default function NavBar(props: NavBarProps) {
-    const { active } = props
-    const activeClass = "border-b-4 border-primary pb-2"
+  return (
+    <nav className="flex justify-between items-center bg-transparent shadow-md p-6 relative">
+      <h1 className="text-3xl font-bold">Organize.me</h1>
 
-    const links = [
-        { text: "home", href: "pages/home" },
-        { text: "agendamentos", href: "components/SchedList" },
-    ]
+      {/* Avatar que abre o menu */}
+      <div className="relative">
+        <img
+          className="size-12 rounded-full cursor-pointer"
+          src="http://github.com/gabimmdev.png"
+          alt="gabimmdev"
+          onClick={() => setIsOpen(!isOpen)}
+        />
 
-    return (
-        <nav className="flex justify-between items-center bg-transparent shadow-md p-6">
-            <h1 className="text-3xl font-bold">Organize.me</h1>
-            <ul className="flex gap-4">
-                {links.map(link =>
-                    <li key={link.text} className={active === link.text ? activeClass : ""}>
-                        <Link href={link.href}>{link.text}</Link>
-                    </li>
-                )}
-
+        {isOpen && (
+          <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border z-10">
+            <ul className="py-2">
+              <li>
+                <Link
+                  href="/cadastro"
+                  className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Cadastro de Usuário
+                </Link>
+              </li>
             </ul>
-            <img className="size-12 rounded-full" src="http://github.com/gabimmdev.png" alt="gabimmdev" />
-        </nav>
-    );
+          </div>
+        )}
+      </div>
+    </nav>
+  );
 }
