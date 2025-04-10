@@ -2,12 +2,14 @@
 import { useState } from "react";
 import { Sched } from "@/app/types/Agendamento";
 import api from "@/app/services/api";
+import axios from "axios";
 
 
 export default function SchedForm() {
     const [form, setForm] = useState<Sched>({ cliente: "", horario: "" });
 
     const handleSubmit = async (e: React.FormEvent) => {
+    await axios.post("http://localhost:8080/agendamento", form);
     e.preventDefault();
     await api.post("/", form);
     alert("Agendamento criado com sucesso!");
