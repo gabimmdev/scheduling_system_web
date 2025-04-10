@@ -4,24 +4,37 @@ import { useState } from "react";
 export default function CadastroUsuario() {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
+  const [linkedin, setLinkedin] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const payload = { nome, email, linkedin };
+
     try {
       const response = await fetch("http://localhost:8080/usuario", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nome, email }),
+        body: JSON.stringify(payload),
       });
+
       if (response.ok) {
+        const data = await response.json();
+
+        // Salva os dados no localStorage
+        localStorage.setItem("usuario", JSON.stringify(data));
+
         alert("Usuário cadastrado com sucesso!");
         setNome("");
         setEmail("");
+        setLinkedin("");
       } else {
-        alert("Erro ao cadastrar usuário.");
+        const error = await response.text();
+        alert("Erro ao cadastrar usuário: " + error);
       }
     } catch (error) {
       console.error("Erro:", error);
+      alert("Erro ao cadastrar usuário.");
     }
   };
 
@@ -49,6 +62,17 @@ export default function CadastroUsuario() {
             required
           />
         </div>
+        <div>
+          <label className="block text-sm font-medium">URL do LinkedIn</label>
+          <input
+            type="url"
+            value={linkedin}
+            onChange={(e) => setLinkedin(e.target.value)}
+            className="w-full px-3 py-2 border rounded-md"
+            placeholder="https://www.linkedin.com/in/seudominio"
+            required
+          />
+        </div>
         <button
           type="submit"
           className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
@@ -59,3 +83,4 @@ export default function CadastroUsuario() {
     </div>
   );
 }
+
