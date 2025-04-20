@@ -18,7 +18,7 @@ export default function SchedList() {
       const response = await api.get("/agendamento");
       setAgendamentos(response.data);
       setErro(null);
-    } catch (error: any) {
+    } catch (error: unknown) {
       setErro("Erro ao buscar agendamentos");
       console.error(error);
     }
@@ -34,7 +34,7 @@ export default function SchedList() {
       const endpoint = atual ? `/agendamento/${id}/desmarcar` : `/agendamento/${id}/concluir`;
       await api.put(endpoint);
       fetchAgendamento();
-    } catch (error: any) {
+    } catch (error: unknown) {
       setErro("Erro ao atualizar agendamento");
       console.error(error);
     }
@@ -45,7 +45,7 @@ export default function SchedList() {
       const endpoint = atual ? `/agendamento/${id}/desconfirmar` : `/agendamento/${id}/confirmar`;
       await api.put(endpoint);
       fetchAgendamento();
-    } catch (error: any) {
+    } catch (error: unknown) {
       setErro("Erro ao atualizar confirmação");
       console.error(error);
     }
@@ -55,7 +55,7 @@ export default function SchedList() {
     try {
       await api.delete(`/agendamento/${id}`);
       fetchAgendamento();
-    } catch (error: any) {
+    } catch (error: unknown) {
       setErro("Erro ao deletar agendamento");
       console.error(error);
     }
@@ -86,7 +86,7 @@ export default function SchedList() {
             >
               {ag.cliente}
             </h2>
-            <p className="text-sm text-black">📅 {ag.horario}</p>
+            <p className="text-sm text-black"> {ag.horario}</p>
             <p className="text-sm text-gray-600">
               {ag.confirmado ? "✅ Confirmado" : "⏳ Não confirmado"}
             </p>
