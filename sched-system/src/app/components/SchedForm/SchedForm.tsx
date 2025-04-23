@@ -24,7 +24,7 @@ const SchedForm: React.FC = () => {
   const onSubmit = async (data: Agendamento) => {
     try {
       // Envia os dados para a API de agendamento no backend
-      const response = await fetch('https://api.seuservidor.com/agendamentos', {
+      const response = await fetch('http://localhost:8080/agendamento', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
